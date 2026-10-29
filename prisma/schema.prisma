@@ -1,31 +1,62 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum StatusProduto {
+  PARA_REVISAR
+  NO_AR
+  PRECO_MUDOU
+  OFERTA_ACABOU
+  OCULTO
+  IGNORADO
+}
+
+enum OrigemClique {
+  SITE
+  WHATSAPP
+  BIO
+}
+
+enum StatusComissao {
+  PENDENTE
+  CONFIRMADA
+}
+
+enum FrequenciaBusca {
+  DIARIA
+  A_CADA_2_DIAS
+  SEMANAL
 }
 
 model Produto {
-  id                 String     @id @default(cuid())
-  shopeeItemId       String     @unique
+  id                 String        @id @default(cuid())
+  mlItemId           String        @unique
   titulo             String
   descricao          String
-  destaques          String     // JSON: string[] (3 itens)
-  categoria          String     // um dos slugs da seção 7.3
-  imagens            String     // JSON: string[] (caminhos em /public/produtos)
-  precoShopee        Float
-  precoAnterior      Float?
+  descricaoOriginal  String        @default("")
+  destaques          String[]
+  categoria          String
+  mlCategoriaId      String?
+  imagens            String[]
+  atributos          Json          @default("[]")
+  preco              Decimal       @db.Decimal(10, 2)
+  precoAnterior      Decimal?      @db.Decimal(10, 2)
   precoConsultadoEm  DateTime
-  comissaoPercentual Float      // ex.: 0.12 = 12%
-  linkOriginal       String
-  linkAfiliado       String
-  status             String     // PARA_REVISAR | NO_AR | PRECO_MUDOU | OFERTA_ACABOU | OCULTO | IGNORADO
-  alertasIA          String     @default("[]") // JSON: string[]
+  comissaoPercentual Decimal?      @db.Decimal(5, 4)
+  linkAnuncio        String
+  linkAfiliado       String?
+  status             StatusProduto @default(PARA_REVISAR)
+  alertas            String[]      @default([])
   publicadoEm        DateTime?
-  criadoEm           DateTime   @default(now())
-  atualizadoEm       DateTime   @updatedAt
+  criadoEm           DateTime      @default(now())
+  atualizadoEm       DateTime      @updatedAt
   cliques            Clique[]
   comissoes          Comissao[]
 
@@ -34,32 +65,34 @@ model Produto {
 }
 
 model Clique {
-  id        String   @id @default(cuid())
+  id        String       @id @default(cuid())
   produtoId String
-  produto   Produto  @relation(fields: [produtoId], references: [id], onDelete: Cascade)
-  origem    String   // site | whatsapp | bio
-  criadoEm  DateTime @default(now())
+  produto   Produto      @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+  origem    OrigemClique @default(SITE)
+  criadoEm  DateTime     @default(now())
 
   @@index([produtoId])
   @@index([criadoEm])
 }
 
 model Comissao {
-  id        String   @id @default(cuid())
-  produtoId String
-  produto   Produto  @relation(fields: [produtoId], references: [id], onDelete: Cascade)
-  valor     Float
-  status    String   // PENDENTE | CONFIRMADA
-  data      DateTime
+  id         String         @id @default(cuid())
+  produtoId  String?
+  produto    Produto?       @relation(fields: [produtoId], references: [id], onDelete: SetNull)
+  valor      Decimal        @db.Decimal(10, 2)
+  status     StatusComissao @default(PENDENTE)
+  data       DateTime
+  observacao String         @default("")
+  criadoEm   DateTime       @default(now())
 
   @@index([status])
+  @@index([data])
 }
 
 model Configuracao {
-  id                      Int      @id @default(1)
-  categoriasPermitidas    String   // JSON: string[] de slugs
-  frequenciaBusca         String   // DIARIA | A_CADA_2_DIAS | SEMANAL
-  publicarAutomaticamente Boolean  @default(false)
-  atualizadoEm            DateTime @updatedAt
+  id                      Int             @id @default(1)
+  categoriasPermitidas    String[]
+  frequenciaBusca         FrequenciaBusca @default(DIARIA)
+  publicarAutomaticamente Boolean         @default(false)
+  atualizadoEm            DateTime        @updatedAt
 }
-

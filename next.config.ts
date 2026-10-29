@@ -9,6 +9,18 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.mlstatic.com",
+      },
+      {
+        protocol: "http",
+        hostname: "**.mlstatic.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

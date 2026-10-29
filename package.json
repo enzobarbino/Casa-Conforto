@@ -8,22 +8,28 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node ./node_modules/vitest/vitest.mjs run",
-    "atualizar": "node ./node_modules/tsx/dist/cli.mjs scripts/atualizar.ts",
-    "buscar-novos": "node ./node_modules/tsx/dist/cli.mjs scripts/buscar-novos.ts",
+    "testar-conexoes": "node ./node_modules/tsx/dist/cli.mjs scripts/testar-conexoes.ts",
+    "importar-produtos": "node ./node_modules/tsx/dist/cli.mjs scripts/importar-produtos.ts",
     "gerar-senha": "node ./node_modules/tsx/dist/cli.mjs scripts/gerar-senha.ts",
-    "db:reset": "prisma migrate reset --force --skip-seed; node ./node_modules/tsx/dist/cli.mjs prisma/seed.ts"
+    "db:seed": "node ./node_modules/tsx/dist/cli.mjs prisma/seed.ts"
   },
   "prisma": {
     "seed": "node ./node_modules/tsx/dist/cli.mjs prisma/seed.ts"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "@prisma/adapter-neon": "^7.10.1",
     "@prisma/client": "^6.4.1",
+    "@types/pg": "^8.23.1",
+    "@types/ws": "^8.18.2",
     "bcryptjs": "^3.0.3",
     "iron-session": "^8.0.4",
     "lucide-react": "^1.63.0",
     "next": "16.4.3",
+    "pg": "^8.23.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "ws": "^8.22.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
