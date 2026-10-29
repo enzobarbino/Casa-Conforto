@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <linearGradient id="grad-shopee-da-05" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#faf5ff" />
+      <stop offset="100%" stop-color="#ffffff" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#grad-shopee-da-05)" rx="32"/>
+  <rect x="24" y="24" width="752" height="752" fill="none" stroke="#8b5cf6" stroke-opacity="0.15" stroke-width="2" rx="24"/>
+  
+  <g transform="translate(400, 290)">
+    <circle r="90" fill="#8b5cf6" fill-opacity="0.1"/>
+    <g transform="translate(-40, -40) scale(3.3)" color="#8b5cf6" fill="none">
+      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <rect x="280" y="440" width="240" height="38" rx="19" fill="#8b5cf6" fill-opacity="0.12"/>
+  <text x="400" y="465" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#8b5cf6" text-anchor="middle">
+    DECORAÇÃO & AROMAS
+  </text>
+
+  <text x="400" y="540" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="700" fill="#1f2937" text-anchor="middle">
+    <tspan x="400" dy="0">Espelho Adnet Redondo com</tspan><tspan x="400" dy="36">Alça de Couro Ecológico</tspan><tspan x="400" dy="36">45cm</tspan>
+  </text>
+
+  <text x="400" y="710" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="500" fill="#9ca3af" text-anchor="middle">
+    Casa &amp; Conforto • Achado Selecionado
+  </text>
+</svg>

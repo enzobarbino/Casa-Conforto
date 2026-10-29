@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Produto {
+  id                 String     @id @default(cuid())
+  shopeeItemId       String     @unique
+  titulo             String
+  descricao          String
+  destaques          String     // JSON: string[] (3 itens)
+  categoria          String     // um dos slugs da seção 7.3
+  imagens            String     // JSON: string[] (caminhos em /public/produtos)
+  precoShopee        Float
+  precoAnterior      Float?
+  precoConsultadoEm  DateTime
+  comissaoPercentual Float      // ex.: 0.12 = 12%
+  linkOriginal       String
+  linkAfiliado       String
+  status             String     // PARA_REVISAR | NO_AR | PRECO_MUDOU | OFERTA_ACABOU | OCULTO | IGNORADO
+  alertasIA          String     @default("[]") // JSON: string[]
+  publicadoEm        DateTime?
+  criadoEm           DateTime   @default(now())
+  atualizadoEm       DateTime   @updatedAt
+  cliques            Clique[]
+  comissoes          Comissao[]
+
+  @@index([status])
+  @@index([categoria])
+}
+
+model Clique {
+  id        String   @id @default(cuid())
+  produtoId String
+  produto   Produto  @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+  origem    String   // site | whatsapp | bio
+  criadoEm  DateTime @default(now())
+
+  @@index([produtoId])
+  @@index([criadoEm])
+}
+
+model Comissao {
+  id        String   @id @default(cuid())
+  produtoId String
+  produto   Produto  @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+  valor     Float
+  status    String   // PENDENTE | CONFIRMADA
+  data      DateTime
+
+  @@index([status])
+}
+
+model Configuracao {
+  id                      Int      @id @default(1)
+  categoriasPermitidas    String   // JSON: string[] de slugs
+  frequenciaBusca         String   // DIARIA | A_CADA_2_DIAS | SEMANAL
+  publicarAutomaticamente Boolean  @default(false)
+  atualizadoEm            DateTime @updatedAt
+}
+
